@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp" tools:context="com.jrn.vocabloom.synonyms">
+
+    <TextView android:text="Synonyms" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:id="@+id/synonyms"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView android:text="Consider learning and using these words next time to increase your vocab score!" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19dp"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:gravity="center"
+        android:layout_below="@+id/synonyms"
+        android:id="@+id/description"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView android:text="" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="15dp"
+        android:id="@+id/word"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:layout_below="@+id/word"
+        android:gravity="center"
+        android:id="@+id/definition">
+        <TextView android:text="" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:id="@+id/part_of_speech" />
+
+        <TextView android:text="" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/part_of_speech"
+            android:layout_marginTop="1dp"
+            android:id="@+id/define" />
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:paddingTop="5dp"
+        android:paddingBottom="52dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/definition" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/Back"
+        android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@+id/bottom_buffer" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/next"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/bottom_buffer" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_buffer"
+        android:textSize="10pt"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"/>
+
+</RelativeLayout>

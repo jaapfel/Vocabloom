@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp" tools:context="com.jrn.vocabloom.scan_successful">
+
+    <TextView android:text="Scan Successful" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textColor="#008000"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp"
+        android:id="@+id/scan_success" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:layout_below="@+id/scan_success"
+        android:layout_marginTop="20dp"
+        android:id="@+id/scan_time">
+        <TextView android:text="Scan Time: " android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/scanTime" />
+
+        <TextView android:text="" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/scanTime"
+            android:id="@+id/time" />
+    </RelativeLayout>
+
+    <TextView android:text="Vocab Score: " android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#008000"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_below="@+id/scan_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:id="@+id/vocab_score" />
+
+    <TextView android:text="" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:layout_below="@+id/vocab_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:id="@+id/score" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="What does this mean?"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
+        android:id="@+id/clarification"
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/score"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="View Results"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/view_results"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/clarification"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Main Menu"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/main_menu"
+        android:layout_below="@+id/view_results"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
+
+</RelativeLayout>

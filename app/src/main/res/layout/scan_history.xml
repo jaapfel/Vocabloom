@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp" tools:context="com.jrn.vocabloom.scan_history">
+
+    <TextView android:text="Scan History" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:id="@+id/your_scan_history"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView android:text="Tap one to view results" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:gravity="center"
+        android:layout_below="@+id/your_scan_history"
+        android:id="@+id/tap"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:divider="#008000"
+        android:dividerHeight="1px"
+        android:paddingBottom="52dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tap" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/view_results"
+        android:layout_alignBottom="@+id/bottom_buffer" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_buffer"
+        android:textSize="10pt"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"/>
+
+</RelativeLayout>
