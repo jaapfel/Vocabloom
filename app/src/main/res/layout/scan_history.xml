@@ -44,7 +44,8 @@
         android:text="Back"
         android:textColor="#FFFFFF"
         android:background="#008000"
-        android:id="@+id/view_results"
+        android:id="@+id/backButton"
+        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/bottom_buffer" />
 
     <TextView

@@ -79,7 +79,7 @@
         android:text="Back"
         android:textColor="#FFFFFF"
         android:background="#008000"
-        android:id="@+id/Back"
+        android:id="@+id/backButton"
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/bottom_buffer" />
 
@@ -89,7 +89,7 @@
         android:text="Next"
         android:textColor="#FFFFFF"
         android:background="#008000"
-        android:id="@+id/next"
+        android:id="@+id/nextButton"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/bottom_buffer" />
 
