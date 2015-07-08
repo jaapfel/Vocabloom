@@ -14,6 +14,8 @@ public class scan extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.scanning);
         Uri mSmsinboxQueryUri = Uri.parse("content://sms/sent");
         Cursor cursor1 = getContentResolver().query(mSmsinboxQueryUri, new String[]{"_id", "thread_id", "address", "person", "date", "body", "type"}, null, null, null);
         startManagingCursor(cursor1);

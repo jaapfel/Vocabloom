@@ -13,7 +13,7 @@ public class scan_successful extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.scan_successful);
 
         Button clarificationButton = (Button)findViewById(R.id.clarification);
         clarificationButton.setOnClickListener(new View.OnClickListener() {
