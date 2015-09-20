@@ -33,6 +33,8 @@ public class scan extends Activity{
                         .getColumnIndex(columns[2]));
                 String msg = cursor1.getString(cursor1
                         .getColumnIndex(columns[3]));
+                // MSG is what you will do the parsing on in this while loop. Other values aren't necessary I think.
+                // Might want to check type first to ensure we aren't trying to parse an image.
                 String type = cursor1.getString(cursor1
                         .getColumnIndex(columns[4]));
             }
