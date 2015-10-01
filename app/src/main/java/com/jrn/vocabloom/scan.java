@@ -5,10 +5,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
+import java.util.*;
 
 /**
  * Created by Jess on 6/27/2015.
+ * Edits by Caitlin on 9/30/2015.
  */
 public class scan extends Activity{
 
@@ -21,6 +22,7 @@ public class scan extends Activity{
         startManagingCursor(cursor1);
         String[] columns = new String[]{"address", "person", "date", "body",
                 "type"};
+        List vocabulary = new ArrayList(); // list for the words that are going to be parsed.
         if (cursor1.getCount() > 0) {
             String count = Integer.toString(cursor1.getCount());
             Log.e("Count", count);
@@ -37,6 +39,18 @@ public class scan extends Activity{
                 // Might want to check type first to ensure we aren't trying to parse an image.
                 String type = cursor1.getString(cursor1
                         .getColumnIndex(columns[4]));
+
+                // NOTE: We'll probably want a check to see if the message is an image or text.
+                //       I'm not really sure what "type" returns so I'm not really sure how to do the comparison
+
+                // remove all characters except for space and lowercase and uppercase letters
+                String message = msg.replaceAll("[^a-zA-Z\\s]", "");
+                Log.e("msg", msg);
+                // split the message up into words
+                String[] word = message.split(" ");
+                Log.d("words", "words: "+ Arrays.toString(word));
+
+                // The words will eventually be stored in a Dictionary. For now though it will just be stored in an array.
             }
         }
     }
