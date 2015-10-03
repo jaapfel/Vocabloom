@@ -50,7 +50,20 @@ public class scan extends Activity{
                 String[] word = message.split(" ");
                 Log.d("words", "words: "+ Arrays.toString(word));
 
-                // The words will eventually be stored in a Dictionary. For now though it will just be stored in an array.
+                // The words will eventually be stored in a Map. For now though it will just be stored in an array.
+                // It looks like the Dictionary functionality is now obsolete so we should use a map, which essentially does the same thing
+                // NOTE: will want to replace "map" with whatever the dictionary/map is called
+                /*for (int i = 0; i < word.length; i++) {
+                    // if the word already exists in the dictionary/map then increment the count
+                    if (map.containsKey(word[i]) {
+                        int tempNum = Integer.parseInt(map.get(word[i])) + 1;
+                        map.put(word[i], Integer.toString(tempNum));
+                    }
+                    // check if the word is an actual word or a determiner or contraction. If not then add the word to the dictionary
+                    else if () {
+                        map.put(word[i], "1"); // it looks like maps only take string values
+                    }
+                }*/
             }
         }
     }
