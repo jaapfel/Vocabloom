@@ -48,7 +48,7 @@ public class scan extends Activity{
                 Log.e("msg", msg);
                 // split the message up into words
                 String[] word = message.split(" ");
-                Log.d("words", "words: "+ Arrays.toString(word));
+                Log.d("words", "words: " + Arrays.toString(word));
 
                 // The words will eventually be stored in a Dictionary. For now though it will just be stored in an array.
             }
