@@ -19,6 +19,7 @@ public class main_menu extends ActionBarActivity{
         Button scanButton = (Button)findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                setContentView(R.layout.scanning);
                 startActivity(new Intent(main_menu.this, scan.class));
             }
         });
