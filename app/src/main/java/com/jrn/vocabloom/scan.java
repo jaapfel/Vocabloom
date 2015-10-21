@@ -22,6 +22,7 @@ import java.util.*;
  * Created by Jess on 6/27/2015.
  * Edits by Caitlin on 9/30/2015.
  * Edits by Jess on 10/4/2015.
+ * Edits by Caitlin on 10/19/2015.
  */
 public class scan extends ActionBarActivity {
 
@@ -90,11 +91,35 @@ public class scan extends ActionBarActivity {
      * @return
      */
     public String[] parseMessage(String msg) {
+        List<String> excludedWords = Arrays.asList("a", "an", "and", "as", "at", "the", "to", "too", "for", "nor","but", "or", "yet", "so", "if", "because", "now", "rather", "who", "what", "where", "when", "why", "how", "whenever", "whether", "which", "while", "whoever", "either", "neither", "it", "i", "be", "you", "me", "she", "he", "him", "her", "his", "this", "is", "of", "with", "can", "by", "then", "there", "here", "was", "would", "have", "had", "did", "do", "that", "their", "in", "on");
         String message = msg.replaceAll("[^a-zA-Z\\s]", "");
-        message.toLowerCase();
+        message = message.toLowerCase();
         Log.e("msg", msg);
         // split the message up into words
         String [] word = message.split(" ");
+
+        // switch to a list because it's easier to  search through
+        List<String> wordList = new ArrayList<String>(Arrays.asList(word));
+
+        // checks for an empty string and removes it if it exists
+        if (wordList.contains(""))
+        {
+            wordList.removeAll(Arrays.asList(""));
+        }
+
+        // iterate through wordList and remove any word from the list that is common (ex: it, as, a, etc...)
+        Iterator<String> it = wordList.iterator();
+        while(it.hasNext())
+        {
+            String temp = it.next();
+            if(excludedWords.contains(temp))
+            {
+                it.remove();
+            }
+        }
+
+        // convert the list back into an array and reallocate the size
+        word = wordList.toArray(new String[0]);
         Log.d("words", "words: " + Arrays.toString(word));
 
         return word;
