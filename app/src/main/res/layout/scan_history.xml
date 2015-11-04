@@ -13,7 +13,9 @@
         android:layout_alignParentTop="true"
         android:id="@+id/your_scan_history"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"/>
 
     <TextView android:text="Tap one to view results" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,16 +26,19 @@
         android:layout_below="@+id/your_scan_history"
         android:id="@+id/tap"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list"
+        android:id="@android:id/list"
         android:divider="#008000"
         android:dividerHeight="1px"
         android:paddingBottom="52dp"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/tap" />
 
     <Button
@@ -53,6 +58,7 @@
         android:textSize="10pt"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:gravity="center"/>
 
 </RelativeLayout>

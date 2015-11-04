@@ -47,7 +47,6 @@ public class scan extends ActionBarActivity {
         List vocabulary = new ArrayList(); // list for the words that are going to be parsed.
         if (cursor1.getCount() > 0) {
             String count = Integer.toString(cursor1.getCount());
-            Log.e("Count", count);
             while (cursor1.moveToNext()) {
                 String address = cursor1.getString(cursor1
                         .getColumnIndex(columns[0]));
@@ -75,7 +74,6 @@ public class scan extends ActionBarActivity {
                     // check if the word is an actual word or a determiner or contraction. If not then add the word to the dictionary
                     else {//if (dictionaryCheck(word[i])) {
                         map.put(word[i], 1); // it looks like maps only take string values
-                        Log.d("msg", "Word added to dictionary");
                     }
                 }
             }
@@ -94,7 +92,6 @@ public class scan extends ActionBarActivity {
         List<String> excludedWords = Arrays.asList("a", "an", "and", "as", "at", "the", "to", "too", "for", "nor","but", "or", "yet", "so", "if", "because", "now", "rather", "who", "what", "where", "when", "why", "how", "whenever", "whether", "which", "while", "whoever", "either", "neither", "it", "i", "be", "you", "me", "she", "he", "him", "her", "his", "this", "is", "of", "with", "can", "by", "then", "there", "here", "was", "would", "have", "had", "did", "do", "that", "their", "in", "on");
         String message = msg.replaceAll("[^a-zA-Z\\s]", "");
         message = message.toLowerCase();
-        Log.e("msg", msg);
         // split the message up into words
         String [] word = message.split(" ");
 
@@ -120,7 +117,6 @@ public class scan extends ActionBarActivity {
 
         // convert the list back into an array and reallocate the size
         word = wordList.toArray(new String[0]);
-        Log.d("words", "words: " + Arrays.toString(word));
 
         return word;
     }

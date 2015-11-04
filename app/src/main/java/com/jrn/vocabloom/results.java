@@ -17,6 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 
 /**
  * Created by Jess on 7/3/2015.
@@ -55,5 +60,36 @@ public class results extends ListActivity{
         Log.d("msg", "Adapter: " + adapter);
         listView.setAdapter(adapter);
 
+        storeScanTime(pref.getString("time", null));
+        storeScan(topTen, (pref.getFloat("score", 0)));
+    }
+
+    private void storeScanTime(String timeScanned) {
+        try {
+            String FILENAME = "scanTime.txt";
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(FILENAME, Context.MODE_PRIVATE));
+            outputStreamWriter.write(timeScanned);
+            Log.d("msg", "The time being stored is: " + timeScanned);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    private void storeScan(String[] topTen, float score) {
+        try {
+            String FILENAME = "scanContent.txt";
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(FILENAME, Context.MODE_PRIVATE));
+            outputStreamWriter.write(Float.toString(score));
+            Log.d("msg", "The score being stored is: " + score);
+            for (int i = 0; i < topTen.length; i++) {
+                outputStreamWriter.write(" " + topTen[i]);
+                Log.d("msg", "The thing being stored is: " + topTen[i]);
+            }
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
     }
 }
