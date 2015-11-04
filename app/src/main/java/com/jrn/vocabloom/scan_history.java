@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,13 +44,11 @@ public class scan_history extends ListActivity {
     }
 
     private void readScanTime() {
-        String FILENAME = "scanTime.txt";
-        FileInputStream fos = null;
         String[] pastScans = new String[50];
         int i = 0;
         try {
-            fos = openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader(fos);
+            FileInputStream fis = new FileInputStream (new File(Environment.getExternalStorageDirectory()+"/scanTime.txt"));
+            InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             //StringBuilder sb = new StringBuilder();
             String line;
@@ -58,7 +58,7 @@ public class scan_history extends ListActivity {
                 pastScans[i] = line;
                 i++;
             }
-            fos.close();
+            fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -78,23 +78,19 @@ public class scan_history extends ListActivity {
     }
 
     private void readScans() {
-        String FILENAME = "scanContent.txt";
-        FileInputStream fos = null;
         String[] pastScans = new String[50];
         int i = 0;
         try {
-            fos = openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader(fos);
+            FileInputStream fis = new FileInputStream (new File(Environment.getExternalStorageDirectory()+"/scanContent.txt"));
+            InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
-            //StringBuilder sb = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                //sb.append(line);
                 Log.d("msg", "The line is: " + line);
                 pastScans[i] = line;
                 i++;
             }
-            fos.close();
+            fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

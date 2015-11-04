@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,12 +42,12 @@ public class results extends ListActivity{
             }
         });
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
 
         TextView time = (TextView) findViewById(R.id.scanTime);
         time.append(pref.getString("time", null));
 
-        String[] topTen = new String[10];
+        final String[] topTen = new String[10];
         for(int i =0; i<10; i++) {
             topTen[i] = pref.getString(String.valueOf(i), "");
             Log.d("msg", "Top ten: " + topTen[1]);
@@ -60,17 +62,28 @@ public class results extends ListActivity{
         Log.d("msg", "Adapter: " + adapter);
         listView.setAdapter(adapter);
 
-        storeScanTime(pref.getString("time", null));
-        storeScan(topTen, (pref.getFloat("score", 0)));
+        Button saveButton = (Button)findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                storeScanTime(pref.getString("time", null));
+                storeScan(topTen, (pref.getFloat("score", 0)));
+            }
+        });
     }
 
     private void storeScanTime(String timeScanned) {
         try {
-            String FILENAME = "scanTime.txt";
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(FILENAME, Context.MODE_PRIVATE));
-            outputStreamWriter.write(timeScanned);
+            File scanFile = new File(Environment.getExternalStorageDirectory()+"/scanTime.txt");
+            if(!scanFile.exists()){
+                scanFile.createNewFile();
+            }
+            FileOutputStream fOut = new FileOutputStream(scanFile, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fOut);
+            outputStreamWriter.append(timeScanned);
             Log.d("msg", "The time being stored is: " + timeScanned);
+            outputStreamWriter.append("\n");
             outputStreamWriter.close();
+            fOut.close();
         }
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -79,15 +92,21 @@ public class results extends ListActivity{
 
     private void storeScan(String[] topTen, float score) {
         try {
-            String FILENAME = "scanContent.txt";
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(FILENAME, Context.MODE_PRIVATE));
-            outputStreamWriter.write(Float.toString(score));
+            File scanFile = new File(Environment.getExternalStorageDirectory()+"/scanContent.txt");
+            if(!scanFile.exists()){
+                scanFile.createNewFile();
+            }
+            FileOutputStream fOut = new FileOutputStream(scanFile, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fOut);
+            outputStreamWriter.append(Float.toString(score));
             Log.d("msg", "The score being stored is: " + score);
             for (int i = 0; i < topTen.length; i++) {
-                outputStreamWriter.write(" " + topTen[i]);
+                outputStreamWriter.append(" " + topTen[i]);
                 Log.d("msg", "The thing being stored is: " + topTen[i]);
             }
+            outputStreamWriter.append("\n");
             outputStreamWriter.close();
+            fOut.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }

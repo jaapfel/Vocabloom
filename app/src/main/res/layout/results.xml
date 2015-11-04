@@ -73,6 +73,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/bottom_buffer" />
 
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:background="#008000"
+        android:id="@+id/saveButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@+id/bottom_buffer" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
