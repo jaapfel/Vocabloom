@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,14 +20,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Jess on 6/27/2015.
  */
-public class scan_history extends ListActivity {
+
+public class scan_history extends ListActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+    public String[] pastScansTime = new String[50];
+    String[] pastScans = new String[50];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,6 @@ public class scan_history extends ListActivity {
     }
 
     private void readScanTime() {
-        String[] pastScans = new String[50];
         int i = 0;
         try {
             FileInputStream fis = new FileInputStream (new File(Environment.getExternalStorageDirectory()+"/scanTime.txt"));
@@ -55,7 +57,7 @@ public class scan_history extends ListActivity {
             while ((line = bufferedReader.readLine()) != null) {
                 //sb.append(line);
                 Log.d("msg", "The line is: " + line);
-                pastScans[i] = line;
+                pastScansTime[i] = line;
                 i++;
             }
             fis.close();
@@ -67,18 +69,17 @@ public class scan_history extends ListActivity {
 
         // Get ListView object from xml
         ListView listView = getListView();
+        listView.setOnItemClickListener(this);
         Log.d("msg", "Listview: " + listView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pastScans);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pastScansTime);
 
         Log.d("msg", "Listview: " + listView);
         Log.d("msg", "Adapter: " + adapter);
         listView.setAdapter(adapter);
-        saveToPreferencesTime(pastScans[0]);
     }
 
     private void readScans() {
-        String[] pastScans = new String[50];
         int i = 0;
         try {
             FileInputStream fis = new FileInputStream (new File(Environment.getExternalStorageDirectory()+"/scanContent.txt"));
@@ -96,18 +97,6 @@ public class scan_history extends ListActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int j=0;
-        while(pastScans[j] != null) {
-            String [] topTen = new String[10];
-            String[] splitStr = pastScans[j].split("\\s+");
-            String score = splitStr[0];
-            for(int k=1; k<splitStr.length; k++) {
-                topTen[k-1] = splitStr[k];
-            }
-            saveToPreferences(Float.parseFloat(score), topTen);
-            j++;
-        }
-        Log.d("msg","Successfully made it through scan saving");
     }
 
     public void saveToPreferencesTime(String time)
@@ -127,5 +116,39 @@ public class scan_history extends ListActivity {
             editor.putString(String.valueOf(i), topTen[i]);
         }
         editor.commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = (Integer)v.getTag();
+        String [] topTen = new String[10];
+        String[] splitStr = pastScans[position].split("\\s+");
+        String score = splitStr[0];
+        for(int k=1; k<splitStr.length; k++) {
+            topTen[k-1] = splitStr[k];
+        }
+        saveToPreferencesTime(pastScansTime[position]);
+        saveToPreferences(Float.parseFloat(score), topTen);
+        Log.d("msg", "Successfully made it through scan saving");
+        Intent intent = new Intent(this, results.class);
+        intent.putExtra("position", position);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String [] topTen = new String[10];
+        Log.d("msg", "PASTSCANS"+pastScans[position]);
+        String[] splitStr = pastScans[position].split("\\s+");
+        String score = splitStr[0];
+        for(int k=1; k<splitStr.length; k++) {
+            topTen[k-1] = splitStr[k];
+        }
+        saveToPreferencesTime(pastScansTime[position]);
+        saveToPreferences(Float.parseFloat(score), topTen);
+        Log.d("msg", "Successfully made it through scan saving");
+        Intent intent = new Intent(this, results.class);
+        intent.putExtra("position", position);
+        startActivity(intent);
     }
 }

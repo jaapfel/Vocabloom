@@ -28,7 +28,7 @@ import java.io.OutputStreamWriter;
 /**
  * Created by Jess on 7/3/2015.
  */
-public class results extends ListActivity{
+public class results extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
