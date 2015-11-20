@@ -89,9 +89,10 @@ public class scan extends ActionBarActivity {
      * @return
      */
     public String[] parseMessage(String msg) {
-        List<String> excludedWords = Arrays.asList("a", "an", "and", "as", "at", "the", "to", "too", "for", "nor","but", "or", "yet", "so", "if", "because", "now", "rather", "who", "what", "where", "when", "why", "how", "whenever", "whether", "which", "while", "whoever", "either", "neither", "it", "i", "be", "you", "me", "she", "he", "him", "her", "his", "this", "is", "of", "with", "can", "by", "then", "there", "here", "was", "would", "have", "had", "did", "do", "that", "their", "in", "on");
-        String message = msg.replaceAll("[^a-zA-Z\\s]", "");
+        List<String> excludedWords = Arrays.asList("yeah", "were", "not", "we", "just", "ok", "okey", "okay", "up", "down", "left", "are", "still", "i'll", "a", "an", "and", "as", "at", "the", "to", "too", "for", "nor", "but", "or", "yet", "so", "if", "because", "now", "rather", "who", "what", "where", "when", "why", "how", "whenever", "whether", "which", "while", "whoever", "either", "neither", "it", "it's", "its", "i'm", "my", "your", "i", "be", "you", "me", "she", "he", "him", "her", "his", "this", "is", "of", "with", "can", "by", "then", "there", "here", "was", "would", "have", "had", "did", "do", "that", "their", "in", "on");
+        String message = msg.replaceAll("[^a-zA-Z\\'\\s]", "");
         message = message.toLowerCase();
+        Log.e("msg", msg);
         // split the message up into words
         String [] word = message.split(" ");
 
@@ -109,14 +110,22 @@ public class scan extends ActionBarActivity {
         while(it.hasNext())
         {
             String temp = it.next();
+            int p = wordList.indexOf(temp);
             if(excludedWords.contains(temp))
             {
                 it.remove();
+            }
+            else if(temp.indexOf('\'')!= -1)
+            {
+                int pos = temp.indexOf('\'');
+                temp = temp.replace("'","");
+                wordList.set(p, temp);
             }
         }
 
         // convert the list back into an array and reallocate the size
         word = wordList.toArray(new String[0]);
+        Log.d("words", "words: " + Arrays.toString(word));
 
         return word;
     }
@@ -141,6 +150,28 @@ public class scan extends ActionBarActivity {
                     }
                 }
         );
+
+        int itr = 0;
+        int isWord = 0;
+        int tempsize = sortedMap.size();
+
+        // This checks the top 10 words to make sure they are words
+        // if not, then the word is removed from the sorted map and the next word is checked
+        while(isWord < 9 && itr < tempsize)
+        {
+            if(dictionaryCheck(sortedMap.get(itr).getKey()))
+            {
+                System.out.println("was a word is "+sortedMap.get(itr).getKey());
+                isWord++;
+                itr++;
+            }
+            else {
+                System.out.println(sortedMap.get(itr).getKey()+" was removed");
+                sortedMap.remove(itr);
+                tempsize--;
+            }
+
+        }
 
         String[] topTen = {sortedMap.get(0).getKey(), sortedMap.get(1).getKey(), sortedMap.get(2).getKey(), sortedMap.get(3).getKey(), sortedMap.get(4).getKey(),sortedMap.get(5).getKey(), sortedMap.get(6).getKey(), sortedMap.get(7).getKey(), sortedMap.get(8).getKey(), sortedMap.get(9).getKey(),};
 
@@ -181,19 +212,24 @@ public class scan extends ActionBarActivity {
      * @return true if found in dictionary, false if not found
      */
     public static boolean dictionaryCheck(String word) {
+        ArrayList<String> tempDict = new ArrayList<String>();
+
         try {
             BufferedReader in = new BufferedReader(new FileReader("/usr/share/dict/american-english"));
             String dictionary;
             while((dictionary = in.readLine()) != null) {
-                if(dictionary.indexOf(word) != -1) {
-                    return true;
-                }
+                tempDict.add(dictionary);
             }
             in.close();
         } catch(IOException e) {
             Log.e("msg", "Failing dictionary Check on: " + word);
         }
-        return false;
+        if(tempDict.indexOf(word) != -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
