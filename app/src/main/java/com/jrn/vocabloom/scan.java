@@ -179,9 +179,9 @@ public class scan extends ActionBarActivity {
         String[] thesaurus = {"pie", "tea", "controller", "sticks", "hot", "blue", "water", "arrow", "curel", "goldfishes"};
 
         // Below is the commented out attempt at the API
-        /*for(int i=0; i<10; i++) {
-            checkDictionary(topTen[i]);
-        }*/
+        for(int i=0; i<10; i++) {
+            thesaurus[i] = checkThesaurus(topTen[i]);
+        }
 
         // Calculate the vocab score
         for (int i : map.values()) {
@@ -241,13 +241,17 @@ public class scan extends ActionBarActivity {
         }
     }*/
 
-    public String checkDictionary(final String word) {
+    public String checkThesaurus(final String word) {
 
         Log.d("msg", "Send Http GET request");
+        final String[] synonym = new String[1];
 
        class checking extends AsyncTask<URL, Integer, Long> {
            protected Long doInBackground(URL... params) {
-                String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
+
+                Log.d("msg", "Inside ASYNC Task");
+                //String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
+                String url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/"+word+"?key=71e05083-b551-4ad9-9a33-4ab2872dbc05";
 
                 URL obj = null;
                 try {
@@ -306,24 +310,13 @@ public class scan extends ActionBarActivity {
 
                 //print result
                 Log.d("msg", "The response was: " + response.toString());
-                String[] thesaurus = new String[10];
-                int j = 0;
-                while(j < 10 && thesaurus[j] != "") {
-                    thesaurus[j] = response.toString();
-                    j++;
-                }
-
-               SharedPreferences pref = getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
-               SharedPreferences.Editor editor = pref.edit();
-               for(int i =0; i<10; i++) {
-                   editor.putString(String.valueOf(i+10), thesaurus[i]);
-               }
+                synonym[0] = response.toString();
 
                 long rand = 0;
                 return rand;
             }
        }
 
-        return word;
+        return synonym[0];
     }
 }
