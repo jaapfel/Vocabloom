@@ -4,26 +4,16 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -70,16 +60,6 @@ public class results extends ListActivity {
 
         final ListAdapter listAdapter = createListAdapter(topTen, thesaurus);
         setListAdapter(listAdapter);
-
-        // Below is commented out to test getting two values per list line
-       /* // Get ListView object from xml
-        ListView listView = getListView();
-        Log.d("msg", "Listview: " + listView);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topTen);
-        Log.d("msg", "Listview: " + listView);
-        Log.d("msg", "Adapter: " + adapter);
-        listView.setAdapter(adapter);*/
 
         Button saveButton = (Button)findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ import java.util.*;
  * Edits by Caitlin on 9/30/2015.
  * Edits by Jess on 10/4/2015.
  * Edits by Caitlin on 10/19/2015.
+ * Edits by Jess on 12/7/2015
  */
 public class scan extends ActionBarActivity {
 
@@ -34,6 +36,9 @@ public class scan extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanning);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         scanSentMessages();
     }
@@ -152,35 +157,23 @@ public class scan extends ActionBarActivity {
                     }
                 }
         );
-/*
-        int itr = 0;
-        int isWord = 0;
-        int tempsize = sortedMap.size();
 
-        // This checks the top 10 words to make sure they are words
-        // if not, then the word is removed from the sorted map and the next word is checked
-        while(isWord < 9 && itr < tempsize)
-        {
-            if(dictionaryCheck(sortedMap.get(itr).getKey()))
-            {
-                System.out.println("was a word is "+sortedMap.get(itr).getKey());
-                isWord++;
-                itr++;
-            }
-            else {
-                System.out.println(sortedMap.get(itr).getKey()+" was removed");
-                sortedMap.remove(itr);
-                tempsize--;
-            }
+        String[] topTen = {sortedMap.get(0).getKey(), sortedMap.get(1).getKey(), sortedMap.get(2).getKey(), sortedMap.get(3).getKey(), sortedMap.get(4).getKey(),sortedMap.get(5).getKey(), sortedMap.get(6).getKey(), sortedMap.get(7).getKey(), sortedMap.get(8).getKey(), sortedMap.get(9).getKey(), sortedMap.get(10).getKey(), sortedMap.get(11).getKey(), sortedMap.get(12).getKey()};
+        String[] thesaurus = new String[13];
 
-        }*/
-
-        String[] topTen = {sortedMap.get(0).getKey(), sortedMap.get(1).getKey(), sortedMap.get(2).getKey(), sortedMap.get(3).getKey(), sortedMap.get(4).getKey(),sortedMap.get(5).getKey(), sortedMap.get(6).getKey(), sortedMap.get(7).getKey(), sortedMap.get(8).getKey(), sortedMap.get(9).getKey(),};
-        String[] thesaurus = {"pie", "tea", "controller", "sticks", "hot", "blue", "water", "arrow", "curel", "goldfishes"};
-
-        // Below is the commented out attempt at the API
-        for(int i=0; i<10; i++) {
+        // Below we find the synonyms using the API
+        for(int i=0; i<13; i++) {
             thesaurus[i] = checkThesaurus(topTen[i]);
+        }
+
+        // If the thesaurus returned nothing but suggestions, eliminate that word
+        for(int i=0; i<13; i++) {
+            if(thesaurus[i] == topTen[i]) {
+                for(int j=i; j<12; j++) {
+                    thesaurus[j] = thesaurus[j+1];
+                    topTen[j] = topTen[j+1];
+                }
+            }
         }
 
         // Calculate the vocab score
@@ -214,33 +207,6 @@ public class scan extends ActionBarActivity {
         editor.commit();
     }
 
-    /**
-     * Determines if a word is in the English Language
-     *
-     * @param word
-     * @return true if found in dictionary, false if not found
-     */
-    /*public static boolean dictionaryCheck(String word) {
-        ArrayList<String> tempDict = new ArrayList<String>();
-
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("/usr/share/dict/american-english"));
-            String dictionary;
-            while((dictionary = in.readLine()) != null) {
-                tempDict.add(dictionary);
-            }
-            in.close();
-        } catch(IOException e) {
-            Log.e("msg", "Failing dictionary Check on: " + word);
-        }
-        if(tempDict.indexOf(word) != -1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }*/
-
     public String checkThesaurus(final String word) {
 
         Log.d("msg", "Send Http GET request");
@@ -263,9 +229,10 @@ public class scan extends ActionBarActivity {
 
         protected Long doInBackground(URL... params) {
 
+            long rand = 0;
             Log.d("msg", "Inside ASYNC Task");
             //String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
-            String url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/"+synonym+"?key=71e05083-b551-4ad9-9a33-4ab2872dbc05";
+            String url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/" + synonym + "?key=71e05083-b551-4ad9-9a33-4ab2872dbc05";
 
             URL obj = null;
             try {
@@ -324,10 +291,20 @@ public class scan extends ActionBarActivity {
             }
 
             //print result
-            Log.d("msg", "The response was: " + response.toString());
-            synonym = response.toString();
+            if (!response.toString().contains("<syn>")) {
+                Log.d("msg", "This is not a word. " + synonym);
+                return rand;
+            } else {
+                int posSynonyms = response.toString().indexOf("<syn>");
+                int endPosSyn = response.toString().indexOf("</syn>");
 
-            long rand = 0;
+                // add 5 to the start position to account for the 5 characters that <syn> takes up
+                synonym = response.toString().substring(posSynonyms+5, endPosSyn);
+                synonym = synonym.replaceAll("<it>", "");
+                synonym = synonym.replaceAll("</it>", "");
+                Log.d("msg", "The synonyms are: " + synonym);
+            }
+
             return rand;
         }
     }
