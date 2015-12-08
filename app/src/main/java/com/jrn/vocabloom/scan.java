@@ -244,79 +244,91 @@ public class scan extends ActionBarActivity {
     public String checkThesaurus(final String word) {
 
         Log.d("msg", "Send Http GET request");
-        final String[] synonym = new String[1];
+        scan s = new scan();
+        scan.Checking check = s.new Checking(word);
+        check.doInBackground();
+        return check.getSynonym();
+    }
 
-       class checking extends AsyncTask<URL, Integer, Long> {
-           protected Long doInBackground(URL... params) {
+    class Checking extends AsyncTask<URL, Integer, Long> {
+        String synonym;
 
-                Log.d("msg", "Inside ASYNC Task");
-                //String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
-                String url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/"+word+"?key=71e05083-b551-4ad9-9a33-4ab2872dbc05";
+        Checking(String word) {
+            synonym = word;
+        }
 
-                URL obj = null;
-                try {
-                    obj = new URL(url);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                HttpURLConnection con = null;
-                try {
-                    con = (HttpURLConnection) obj.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        public String getSynonym() {
+            return synonym;
+        }
 
-                // optional default is GET
-                try {
-                    con.setRequestMethod("GET");
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                }
+        protected Long doInBackground(URL... params) {
 
-                //add request header
-                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            Log.d("msg", "Inside ASYNC Task");
+            //String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
+            String url = "http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/"+synonym+"?key=71e05083-b551-4ad9-9a33-4ab2872dbc05";
 
-                int responseCode = 0;
-                try {
-                    responseCode = con.getResponseCode();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("\nSending 'GET' request to URL : " + url);
-                System.out.println("Response Code : " + responseCode);
-
-                BufferedReader in = null;
-                try {
-                    in = new BufferedReader(
-                            new InputStreamReader(con.getInputStream()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                try {
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //print result
-                Log.d("msg", "The response was: " + response.toString());
-                synonym[0] = response.toString();
-
-                long rand = 0;
-                return rand;
+            URL obj = null;
+            try {
+                obj = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-       }
+            HttpURLConnection con = null;
+            try {
+                con = (HttpURLConnection) obj.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        return synonym[0];
+            // optional default is GET
+            try {
+                con.setRequestMethod("GET");
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            }
+
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = 0;
+            try {
+                responseCode = con.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("msg", "Sending 'GET' request to URL : " + url);
+            Log.d("msg", "Response Code : " + responseCode);
+
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            try {
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //print result
+            Log.d("msg", "The response was: " + response.toString());
+            synonym = response.toString();
+
+            long rand = 0;
+            return rand;
+        }
     }
 }
