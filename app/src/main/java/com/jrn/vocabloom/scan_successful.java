@@ -1,6 +1,8 @@
 package com.jrn.vocabloom;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,10 +24,36 @@ public class scan_successful extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_successful);
 
+        final Context context = this;
+
         Button clarificationButton = (Button)findViewById(R.id.clarification);
         clarificationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                startActivity(new Intent(scan_successful.this, clarification.class));
+            @Override
+            public void onClick(View arg0) {
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+                // set title
+                alertDialogBuilder.setTitle("Vocab Score:");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("This score is calculated by the ratio of your unique words to total words used.")
+                        .setCancelable(false)
+                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, just close
+                                // the dialog box and do nothing
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
             }
         });
 

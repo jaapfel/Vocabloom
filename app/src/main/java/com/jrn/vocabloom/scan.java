@@ -1,19 +1,23 @@
 package com.jrn.vocabloom;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -92,7 +96,6 @@ public class scan extends ActionBarActivity {
         List<String> excludedWords = Arrays.asList("yeah", "were", "not", "we", "just", "ok", "okey", "okay", "up", "down", "left", "are", "still", "i'll", "a", "an", "and", "as", "at", "the", "to", "too", "for", "nor", "but", "or", "yet", "so", "if", "because", "now", "rather", "who", "what", "where", "when", "why", "how", "whenever", "whether", "which", "while", "whoever", "either", "neither", "it", "it's", "its", "i'm", "my", "your", "i", "be", "you", "me", "she", "he", "him", "her", "his", "this", "is", "of", "with", "can", "by", "then", "there", "here", "was", "would", "have", "had", "did", "do", "that", "their", "in", "on");
         String message = msg.replaceAll("[^a-zA-Z\\'\\s]", "");
         message = message.toLowerCase();
-        Log.e("msg", msg);
         // split the message up into words
         String [] word = message.split(" ");
 
@@ -125,7 +128,6 @@ public class scan extends ActionBarActivity {
 
         // convert the list back into an array and reallocate the size
         word = wordList.toArray(new String[0]);
-        Log.d("words", "words: " + Arrays.toString(word));
 
         return word;
     }
@@ -150,7 +152,7 @@ public class scan extends ActionBarActivity {
                     }
                 }
         );
-
+/*
         int itr = 0;
         int isWord = 0;
         int tempsize = sortedMap.size();
@@ -171,9 +173,15 @@ public class scan extends ActionBarActivity {
                 tempsize--;
             }
 
-        }
+        }*/
 
         String[] topTen = {sortedMap.get(0).getKey(), sortedMap.get(1).getKey(), sortedMap.get(2).getKey(), sortedMap.get(3).getKey(), sortedMap.get(4).getKey(),sortedMap.get(5).getKey(), sortedMap.get(6).getKey(), sortedMap.get(7).getKey(), sortedMap.get(8).getKey(), sortedMap.get(9).getKey(),};
+        String[] thesaurus = {"pie", "tea", "controller", "sticks", "hot", "blue", "water", "arrow", "curel", "goldfishes"};
+
+        // Below is the commented out attempt at the API
+        /*for(int i=0; i<10; i++) {
+            checkDictionary(topTen[i]);
+        }*/
 
         // Calculate the vocab score
         for (int i : map.values()) {
@@ -181,7 +189,7 @@ public class scan extends ActionBarActivity {
         }
 
         score = (map.size()/((float)sum))*100;
-        saveToPreferences(score, topTen);
+        saveToPreferences(score, topTen, thesaurus);
     }
 
     /**
@@ -190,7 +198,7 @@ public class scan extends ActionBarActivity {
      * @param score
      * @param topTen
      */
-    public void saveToPreferences(float score, String[] topTen)
+    public void saveToPreferences(float score, String[] topTen, String[] thesaurus)
     {
         DateFormat df = new SimpleDateFormat("MM/dd/yy HH:mm");
         Date dateobj = new Date();
@@ -200,6 +208,7 @@ public class scan extends ActionBarActivity {
         editor.putFloat("score", score);
         for(int i =0; i<10; i++) {
             editor.putString(String.valueOf(i), topTen[i]);
+            editor.putString(String.valueOf(i+10), thesaurus[i]);
         }
         editor.putString("time", df.format(dateobj));
         editor.commit();
@@ -211,7 +220,7 @@ public class scan extends ActionBarActivity {
      * @param word
      * @return true if found in dictionary, false if not found
      */
-    public static boolean dictionaryCheck(String word) {
+    /*public static boolean dictionaryCheck(String word) {
         ArrayList<String> tempDict = new ArrayList<String>();
 
         try {
@@ -230,6 +239,91 @@ public class scan extends ActionBarActivity {
         else {
             return false;
         }
-    }
+    }*/
 
+    public String checkDictionary(final String word) {
+
+        Log.d("msg", "Send Http GET request");
+
+       class checking extends AsyncTask<URL, Integer, Long> {
+           protected Long doInBackground(URL... params) {
+                String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/"+word+"?key=626f1e47-f620-4bd5-8dc5-a855d151e0a4";
+
+                URL obj = null;
+                try {
+                    obj = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                HttpURLConnection con = null;
+                try {
+                    con = (HttpURLConnection) obj.openConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // optional default is GET
+                try {
+                    con.setRequestMethod("GET");
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                }
+
+                //add request header
+                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+                int responseCode = 0;
+                try {
+                    responseCode = con.getResponseCode();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(
+                            new InputStreamReader(con.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                try {
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //print result
+                Log.d("msg", "The response was: " + response.toString());
+                String[] thesaurus = new String[10];
+                int j = 0;
+                while(j < 10 && thesaurus[j] != "") {
+                    thesaurus[j] = response.toString();
+                    j++;
+                }
+
+               SharedPreferences pref = getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
+               SharedPreferences.Editor editor = pref.edit();
+               for(int i =0; i<10; i++) {
+                   editor.putString(String.valueOf(i+10), thesaurus[i]);
+               }
+
+                long rand = 0;
+                return rand;
+            }
+       }
+
+        return word;
+    }
 }
