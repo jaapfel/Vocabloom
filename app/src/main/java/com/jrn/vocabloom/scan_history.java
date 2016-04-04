@@ -1,5 +1,6 @@
 package com.jrn.vocabloom;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,8 @@ public class scan_history extends ListActivity implements View.OnClickListener, 
     public String[] pastScansTime = new String[50];
     String[] pastScans = new String[50];
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,8 @@ public class scan_history extends ListActivity implements View.OnClickListener, 
         Button backButton = (Button)findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                startActivity(new Intent(scan_history.this, main_menu.class));
+                //startActivity(new Intent(scan_history.this, main_menu.class));
+                finish();
             }
         });
 

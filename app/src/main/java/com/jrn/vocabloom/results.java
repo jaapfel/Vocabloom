@@ -1,13 +1,16 @@
 package com.jrn.vocabloom;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
@@ -40,7 +43,8 @@ public class results extends ListActivity {
         Button viewResultsButton = (Button)findViewById(R.id.backButton);
         viewResultsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                startActivity(new Intent(results.this, scan_successful.class));
+                //startActivity(new Intent(results.this, scan_successful.class));
+                finish();
             }
         });
 
@@ -48,6 +52,9 @@ public class results extends ListActivity {
 
         TextView time = (TextView) findViewById(R.id.scanTime);
         time.append(pref.getString("time", null));
+
+        TextView score = (TextView) findViewById(R.id.score);
+        score.append("   "+Integer.toString(Math.round(pref.getFloat("score", 0))));
 
         final String[] topTen = new String[10];
         final String[] thesaurus = new String[10];
@@ -61,11 +68,33 @@ public class results extends ListActivity {
         final ListAdapter listAdapter = createListAdapter(topTen, thesaurus);
         setListAdapter(listAdapter);
 
+        final Context context = this;
+
         Button saveButton = (Button)findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 storeScanTime(pref.getString("time", null));
                 storeScan(topTen, (pref.getFloat("score", 0)));
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Saved!")
+                        .setCancelable(false)
+                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, just close
+                                // the dialog box and do nothing
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
             }
         });
     }

@@ -42,7 +42,7 @@
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Back"
         android:textColor="#FFFFFF"
         android:background="#008000"

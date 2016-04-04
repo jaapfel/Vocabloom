@@ -12,7 +12,9 @@
         android:layout_alignParentTop="true"
         android:id="@+id/synonyms"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView android:text="Consider learning and using these words next time to increase your vocab score!" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +25,9 @@
         android:layout_below="@+id/synonyms"
         android:id="@+id/description"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView android:text="" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +39,9 @@
         android:layout_marginTop="15dp"
         android:id="@+id/word"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -68,11 +74,12 @@
         android:paddingTop="5dp"
         android:paddingBottom="52dp"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/definition" />
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Back"
         android:textColor="#FFFFFF"
         android:background="#008000"
@@ -82,7 +89,7 @@
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Next"
         android:textColor="#FFFFFF"
         android:background="#008000"
@@ -97,6 +104,7 @@
         android:textSize="10pt"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:gravity="center"/>
 
 </RelativeLayout>

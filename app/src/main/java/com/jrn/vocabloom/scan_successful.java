@@ -1,12 +1,12 @@
 package com.jrn.vocabloom;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 /**
  * Created by Jess on 7/3/2015.
  */
-public class scan_successful extends ActionBarActivity {
+public class scan_successful extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +35,7 @@ public class scan_successful extends ActionBarActivity {
 
                 // set dialog message
                 alertDialogBuilder
-                        .setMessage("This score is calculated by the ratio of your unique words to total words used.")
+                        .setMessage("This score is calculated by the ratio of your unique words to total words used. The higher the score the better in a range of 1-100 with an OK score being around 30.")
                         .setCancelable(false)
                         .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

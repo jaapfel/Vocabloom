@@ -1,5 +1,6 @@
 package com.jrn.vocabloom;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,12 +8,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -30,8 +30,9 @@ import java.util.*;
  * Edits by Caitlin on 10/19/2015.
  * Edits by Jess on 12/7/2015
  */
-public class scan extends ActionBarActivity {
+public class scan extends Activity {
 
+    private final int WAIT_TIME = 250000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class scan extends ActionBarActivity {
         StrictMode.setThreadPolicy(policy);
 
         scanSentMessages();
+        startActivity(new Intent(scan.this, scan_successful.class));
     }
 
     /**
@@ -76,7 +78,7 @@ public class scan extends ActionBarActivity {
                 for (int i = 0; i < word.length; i++) {
                     // if the word already exists in the dictionary/map then increment the count
                     if (!map.isEmpty() && map.containsKey(word[i])) {
-                        int tempNum = (int)map.get(word[i]) + 1;
+                        int tempNum = (int) map.get(word[i]) + 1;
                         map.put(word[i], tempNum);
                     }
 
@@ -88,7 +90,6 @@ public class scan extends ActionBarActivity {
             }
             analyze((HashMap<String, Integer>) map);
         }
-        startActivity(new Intent(scan.this, scan_successful.class));
     }
 
     /**
@@ -259,13 +260,15 @@ public class scan extends ActionBarActivity {
 
             int responseCode = 0;
             try {
-                responseCode = con.getResponseCode();
+                for(int i=0; i<20; i++){
+                    responseCode = con.getResponseCode();
+                    Log.d("msg", "Sending 'GET' request to URL : " + url);
+                    Log.d("msg", "Response Code : " + responseCode);
+                    if(responseCode == 200) break;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            Log.d("msg", "Sending 'GET' request to URL : " + url);
-            Log.d("msg", "Response Code : " + responseCode);
 
             BufferedReader in = null;
             try {

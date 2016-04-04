@@ -1,7 +1,7 @@
 package com.jrn.vocabloom;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +9,7 @@ import android.widget.Button;
 /**
  * Created by Jess on 6/27/2015.
  */
-public class main_menu extends ActionBarActivity{
+public class main_menu extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
