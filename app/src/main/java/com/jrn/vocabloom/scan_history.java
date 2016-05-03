@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Jess on 6/27/2015.
@@ -75,11 +79,9 @@ public class scan_history extends ListActivity implements View.OnClickListener, 
         listView.setOnItemClickListener(this);
         Log.d("msg", "Listview: " + listView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pastScansTime);
+        ItemAdapter iAdapter = new ItemAdapter(this, pastScansTime);
+        listView.setAdapter(iAdapter);
 
-        Log.d("msg", "Listview: " + listView);
-        Log.d("msg", "Adapter: " + adapter);
-        listView.setAdapter(adapter);
     }
 
     private void readScans() {
